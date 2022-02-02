@@ -26,7 +26,7 @@ export default class TestComponent extends PureComponent {
   }
   render() {
     return (
-      <div>
+      <main>
         <div
           className={
             this.state.wasChangedDirectly === null
@@ -39,109 +39,115 @@ export default class TestComponent extends PureComponent {
           <h3>
             Состояние
             {this.state.wasChangedDirectly !== null &&
-               " было изменено напрямую: " + this.state.wasChangedDirectly.toString()}
+              " было изменено напрямую: " +
+                this.state.wasChangedDirectly.toString()}
           </h3>
           <Mapper data={this.state.data} />
           {this.state.wasChangedDirectly !== null && (
-            <button className="btn__reset"onClick={this.reset} ref={this.buttonRef}>
+            <button
+              className="btn__reset"
+              onClick={this.reset}
+              ref={this.buttonRef}
+            >
               Сброс
             </button>
           )}
         </div>
-        <div>
-          <h3>Изменение элемента (поиск по индексу в массиве)</h3>
+        <div className="examples">
+          <h3>Изменение элемента (по индексу в массиве)</h3>
           <Example
-            func={this.testFunc_1_1}
+            func={this.changeEl_1}
             disable={this.state.wasChangedDirectly !== null}
           />
           <Example
-            func={this.testFunc_1_2}
+            func={this.changeEl_2}
             disable={this.state.wasChangedDirectly !== null}
           />
           <h3>Добавление элемента</h3>
           <Example
-            func={this.testFunc_2}
+            func={this.addEl}
             disable={this.state.wasChangedDirectly !== null}
           />
           <h3>Сортировка</h3>
           <Example
-            func={this.testFunc_3_1}
+            func={this.sortEl_1}
             disable={this.state.wasChangedDirectly !== null}
           />
           <Example
-            func={this.testFunc_3_2}
+            func={this.sortEl_2}
             disable={this.state.wasChangedDirectly !== null}
           />
-          <h3>Изменение элемента (поиск по свойству элемента)</h3>
+          <h3>Изменение элемента (map(), поиск по свойству элемента)</h3>
           <Example
-            func={this.testFunc_4_1}
+            func={this.filterEl_1}
             disable={this.state.wasChangedDirectly !== null}
           />
           <Example
-            func={this.testFunc_4_2}
+            func={this.filterEl_2}
             disable={this.state.wasChangedDirectly !== null}
           />
         </div>
-      </div>
+      </main>
     );
   }
 
   /**
    * Для отображения кода функций-обработвичков на странице необходимо
-   * использовать синтсксис "testFunc_1_1 = () => "
+   * использовать синтсксис "changeEl_1 = () => "
    * И не использовать bind в конструкторе
    * Иначе будет выводиться "function([native code])""
    */
 
   // ***Изменение элемента (поиск по индексу в массиве)***
-  //Изменять элемент - неверно!
-  testFunc_1_1 = () => {
+  //Изменять элемент массива - неверно!
+  changeEl_1 = () => {
     const copy = this.state.data.slice();
-    copy[0].name = copy[0].name === "Bob" ? "Alice" : "Bob";
+    copy[0].name = copy[0].name = "Bob";
 
-    this.didStateChange("testFunc_1", copy);
+    this.didStateChange("changeEl_1", copy);
 
     this.setState({ data: copy });
   };
   //Правильно - заменять элемент на новый
-  testFunc_1_2 = () => {
+  //стырый объект не изменился, мы заменили ссылку в массиве на новый объект 
+  changeEl_2 = () => {
     const copy = this.state.data.slice();
-    copy[0] = { ...copy[0], name: copy[0].name === "Bob" ? "Alice" : "Bob" };
+    copy[0] = { ...copy[0], name: "Bob" };
 
-    this.didStateChange("testFunc_1_a", copy);
+    this.didStateChange("changeEl_2", copy);
 
     this.setState({ data: copy });
   };
   // ***Добавление элемента***
-  testFunc_2 = () => {
+  addEl = () => {
     const copy = this.state.data.slice();
     copy.push({ name: "This is new name!", active: true });
 
-    this.didStateChange("testFunc_2", copy);
+    this.didStateChange("addEl", copy);
 
     this.setState({ data: copy });
   };
   // ***Сортировка***
   // Сортирока на месте - неверно!
-  testFunc_3_1 = () => {
+  sortEl_1 = () => {
     const copy = this.state.data.sort((a, b) => a.id - b.id);
 
-    this.didStateChange("testFunc_3", copy);
+    this.didStateChange("sortEl_1", copy);
 
     this.setState({ data: copy });
   };
 
   // Правильно: Создаем копию и только затем - сортируем
-  testFunc_3_2 = () => {
+  sortEl_2 = () => {
     const copy = this.state.data.slice();
     copy.sort((a, b) => a.id - b.id);
-    this.didStateChange("testFunc_3_1", copy);
+    this.didStateChange("sortEl_2", copy);
     this.setState({ data: copy });
   };
 
   // ***Изменение элемента (поиск по свойству элемента)***
   // Изменять существующий элемент - неверно!
-  testFunc_4_1 = () => {
+  filterEl_1 = () => {
     const result = this.state.data.map((el) => {
       if (el.name === "B") {
         el.active = false;
@@ -149,14 +155,14 @@ export default class TestComponent extends PureComponent {
       return el;
     });
 
-    this.didStateChange("testFunc_4_1", result);
+    this.didStateChange("filterEl_1", result);
 
     this.setState({ data: result });
   };
 
-  // Правильно - заменять элемент на новый
-  testFunc_4_2 = () => {
-    const prevData = JSON.stringify(this.state.data);
+  // Правильно - заменять элемент на новый 
+  // Мы изменили не объект, а ссылку в массиве
+  filterEl_2 = () => {
     const result = this.state.data.map((el) => {
       if (el.name === "B") {
         return { ...el, active: false };
@@ -164,7 +170,7 @@ export default class TestComponent extends PureComponent {
       return el;
     });
 
-    this.didStateChange("testFunc_4_1", result, prevData);
+    this.didStateChange("filterEl_2", result);
 
     this.setState({ data: result });
   };

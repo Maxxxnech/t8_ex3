@@ -2,21 +2,16 @@
    display: flex;
    padding-bottom: 5px;
    justify-content: space-between;
-   width: 60vw;
-}
-
-p{
-    padding-left: 20px
-}
-p:last-child{
-padding-left: 0;
-}
-p:first-child{
-    padding-left: 0;
+   width: auto;
+   flex-wrap: wrap;
 }
 
 code{
-    background-color: #ffaabb;
+    background-color: #ffaaff;
     text-align: left;
     flex-grow: 1;
+}
+
+.example button {
+    float: right;
 }

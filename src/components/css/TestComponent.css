@@ -1,10 +1,29 @@
-.display {
+main{
+    display:flex;
+    flex-flow: column;
+    align-items: center; 
+    height: 80vh; 
+    width: 100vw;
     position:fixed;
-    right:0;
-    top: 30vh;
+}
+
+@media (width <= 600px){
+    main {
+        height: 70vh; 
+    }
+}
+.display {
     height: auto;
-    width: 30vw;
     border: 1px solid black;
+    background-color: lightgray;
+}
+.examples{
+    overflow: scroll;
+   /*margin-top: 200px;*/
+   overflow-x: hidden;
+}
+.display, .examples {
+    width: 90vw;
 }
 
 .display.notChanged{
