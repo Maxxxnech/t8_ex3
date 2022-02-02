@@ -1,0 +1,26 @@
+.display {
+    position:fixed;
+    right:0;
+    top: 30vh;
+    height: auto;
+    width: 30vw;
+    border: 1px solid black;
+}
+
+.display.notChanged{
+    background-color: lightgreen;
+}
+
+.display.changed{
+    background-color: red;
+}
+
+button{
+   cursor:pointer
+}
+.btn__reset{
+    width: 100%;
+    height: 50px;
+    font-weight: bold;
+    font-size: large;
+}

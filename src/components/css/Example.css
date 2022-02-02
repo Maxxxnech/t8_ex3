@@ -1,0 +1,22 @@
+.example{
+   display: flex;
+   padding-bottom: 5px;
+   justify-content: space-between;
+   width: 60vw;
+}
+
+p{
+    padding-left: 20px
+}
+p:last-child{
+padding-left: 0;
+}
+p:first-child{
+    padding-left: 0;
+}
+
+code{
+    background-color: #ffaabb;
+    text-align: left;
+    flex-grow: 1;
+}
